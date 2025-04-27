@@ -1,0 +1,95 @@
+:root {
+    --bg-color: #f8f8f8;
+    --text-color: #333;
+    --card-bg: #fff;
+    --accent: #e67e22;
+  }
+  
+  body.dark {
+    --bg-color: #121212;
+    --text-color: #f0f0f0;
+    --card-bg: #1e1e1e;
+    --accent: #ff9933;
+  }
+  
+  body {
+    margin: 0;
+    padding: 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  h1 {
+    margin: 0;
+    font-size: 28px;
+    color: var(--accent);
+  }
+  
+  #themeToggle {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #recipe {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  }
+  
+  img {
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  #newRecipeBtn {
+    display: block;
+    margin: 30px auto 0;
+    padding: 12px 24px;
+    background-color: var(--accent);
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  #newRecipeBtn:hover,
+  #themeToggle:hover {
+    background-color: #d35400;
+  }
+  
+  .ingredients {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .ingredient {
+    width: 110px;
+    text-align: center;
+  }
+  
+  .ingredient img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+  }
+  
