@@ -1,53 +1,75 @@
-const recipeContainer = document.getElementById('recipe');
-const themeToggle = document.getElementById('themeToggle');
-const newRecipeBtn = document.getElementById('newRecipeBtn');
+// OpenWeatherMap API key
+const apiKey = 'd70014391161daeda23d9a8dcb065efd'; // Your API key
 
-// Theme toggle
-themeToggle.addEventListener('click', () => {
-  document.body.classList.toggle('dark');
-  const isDark = document.body.classList.contains('dark');
-  themeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
-});
+// Function to fetch weather data
+async function getWeather() {
+  const city = document.getElementById('city').value.trim();
 
-// Get new recipe
-newRecipeBtn.addEventListener('click', getRecipe);
+  if (!city) {
+    alert('Please enter a city!');
+    return;
+  }
 
-// Initial recipe load
-getRecipe();
+  // Show loading spinner
+  document.getElementById('loading').classList.add('loading');
+  document.getElementById('error-message').textContent = '';
+  document.getElementById('forecast').innerHTML = ''; // Clear previous forecast
 
-function getRecipe() {
-  fetch('https://www.themealdb.com/api/json/v1/1/random.php')
-    .then(res => res.json())
-    .then(data => {
-      const meal = data.meals[0];
-      const ingredients = [];
+  try {
+    // Fetch the weather data from OpenWeatherMap API
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&cnt=7&units=metric&appid=${apiKey}`);
+    const data = await response.json();
 
-      for (let i = 1; i <= 20; i++) {
-        const ingredient = meal[`strIngredient${i}`];
-        const measure = meal[`strMeasure${i}`];
-        if (ingredient && ingredient.trim()) {
-          ingredients.push({ name: ingredient, measure });
-        }
-      }
+    // Check if the city is found
+    if (data.cod !== '200') {
+      throw new Error(data.message); // Handle error if city is not found
+    }
 
-      recipeContainer.innerHTML = `
-        <h2>${meal.strMeal}</h2>
-        <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
-        <h3>🍴 Ingredients</h3>
-        <div class="ingredients">
-          ${ingredients.map(ing => `
-            <div class="ingredient">
-              <img src="https://www.themealdb.com/images/ingredients/${encodeURIComponent(ing.name)}.png" />
-              <p>${ing.measure} ${ing.name}</p>
-            </div>
-          `).join('')}
-        </div>
-        <h3>📝 Instructions</h3>
-        <p>${meal.strInstructions}</p>
-      `;
-    })
-    .catch(err => {
-      recipeContainer.innerHTML = "Failed to fetch recipe. Try again!";
-      console.error(err);
-    });
+    // Process and display the forecast
+    displayForecast(data);
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    document.getElementById('error-message').textContent = `Error: ${error.message}. Please try again.`;
+  } finally {
+    // Hide the loading spinner
+    document.getElementById('loading').classList.remove('loading');
+  }
+}
+
+// Function to display the forecast
+function displayForecast(data) {
+  const forecastContainer = document.getElementById('forecast');
+  data.list.forEach(day => {
+    const dayElement = document.createElement('div');
+    dayElement.classList.add('day');
+
+    // Get the day and date
+    const date = new Date(day.dt * 1000);
+    const dayName = date.toLocaleString('en', { weekday: 'short' });
+    const dateString = date.toLocaleDateString();
+
+    // Get the weather and temperature
+    const weatherDescription = day.weather[0].description;
+    const temperature = day.temp.day.toFixed(1);
+    const iconCode = day.weather[0].icon;
+
+    dayElement.innerHTML = `
+      <h3>${dayName}</h3>
+      <p>${dateString}</p>
+      <img src="http://openweathermap.org/img/wn/${iconCode}.png" alt="${weatherDescription}" />
+      <p>${weatherDescription}</p>
+      <p>${temperature}°C</p>
+    `;
+
+    forecastContainer.appendChild(dayElement);
+  });
+}
+
+// Handler for typing input (optional feature to add auto-complete)
+function cityInputHandler() {
+  const input = document.getElementById('city').value.trim();
+  if (input.length > 2) {
+    // You could add a city suggestion API here to provide autocomplete suggestions
+    console.log('User is typing: ', input);
+  }
 }

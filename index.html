@@ -1,22 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Random Recipe Explorer</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7-Day Weather Forecast</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+    .container {
+      width: 80%;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .city-search {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .forecast {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 15px;
+    }
+    .day {
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 5px;
+      width: 120px;
+      margin: 10px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .spinner {
+      display: none;
+      margin: 20px auto;
+      text-align: center;
+    }
+    .loading {
+      display: block;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>🍽️ Random Recipe Explorer</h1>
-    <button id="themeToggle">🌙 Dark Mode</button>
-  </header>
 
-  <main>
-    <div id="recipe">Loading...</div>
-    <button id="newRecipeBtn">🔁 Get Another Recipe</button>
-  </main>
+  <div class="container">
+    <h1>7-Day Weather Forecast</h1>
 
-  <script src="script.js"></script>
+    <div class="city-search">
+      <input type="text" id="city" placeholder="Enter a city" onkeyup="cityInputHandler()" />
+      <button onclick="getWeather()">Get Forecast</button>
+    </div>
+
+    <div id="loading" class="spinner">
+      <p>Loading...</p>
+    </div>
+
+    <div id="error-message" class="error"></div>
+    <div id="forecast" class="forecast">
+      <!-- Weather data will be displayed here -->
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
