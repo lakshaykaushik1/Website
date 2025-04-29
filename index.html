@@ -1,82 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>7-Day Weather Forecast</title>
-  <style>
+  <head>
+    <meta charset="UTF-8">
+    <title>7-Day Weather Forecast - European Cities</title>
+    <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0;
-    }
-    .container {
-      width: 80%;
-      margin: 20px auto;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      margin: 20px;
       text-align: center;
-      color: #333;
     }
-    .city-search {
-      text-align: center;
-      margin-bottom: 20px;
+    select, button {
+      font-size: 16px;
+      padding: 5px 10px;
+      margin: 10px;
     }
     .forecast {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      gap: 15px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      justify-items: center;
+      margin-top: 20px;
+      padding: 20px;
     }
+
     .day {
-      background-color: #f9f9f9;
-      padding: 10px;
-      border-radius: 5px;
-      width: 120px;
-      margin: 10px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+      width: 150px;
       text-align: center;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
     }
-    .spinner {
-      display: none;
-      margin: 20px auto;
-      text-align: center;
+    .day:hover {
+      transform: scale(1.05);
     }
-    .loading {
+    .day img {
+      width: 60px;
+      height: 60px;
+    }
+    .day strong {
       display: block;
+      margin-bottom: 5px;
     }
-    .error {
-      color: red;
-      font-weight: bold;
-      text-align: center;
+    #loading {
+      font-size: 18px;
+      color: #555;
+      margin-top: 20px;
     }
   </style>
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400&display=swap"
+      rel="stylesheet">
+  </head>
+  <body>
 
-  <div class="container">
     <h1>7-Day Weather Forecast</h1>
 
-    <div class="city-search">
-      <input type="text" id="city" placeholder="Enter a city" onkeyup="cityInputHandler()" />
-      <button onclick="getWeather()">Get Forecast</button>
-    </div>
+    <label for="city">Choose a European City:</label>
+    <select id="city">
+      <option value="48.8566,2.3522">Paris</option>
+      <option value="51.5074,-0.1278">London</option>
+      <option value="41.9028,12.4964">Rome</option>
+      <option value="52.5200,13.4050">Berlin</option>
+      <option value="40.4168,-3.7038">Madrid</option>
+      <option value="48.2082,16.3738">Vienna</option>
+      <option value="52.3676,4.9041">Amsterdam</option>
+      <option value="59.9343,30.3351">Saint Petersburg</option>
+      <option value="60.1695,24.9354">Helsinki</option>
+    </select>
+    <button>Get Forecast</button>
 
-    <div id="loading" class="spinner">
-      <p>Loading...</p>
-    </div>
+    <div id="loading"></div>
+    <div id="forecast" class="forecast"></div>
 
-    <div id="error-message" class="error"></div>
-    <div id="forecast" class="forecast">
-      <!-- Weather data will be displayed here -->
-    </div>
-  </div>
+    <script>
+    document.querySelector("button").addEventListener("click", handleWeatherRequest);
 
-  <script src="app.js"></script>
-</body>
+    const weatherIcons = {
+      clearday: "https://img.icons8.com/emoji/48/sun-emoji.png",
+      clearnight: "https://img.icons8.com/emoji/48/full-moon-emoji.png",
+      clear: "https://img.icons8.com/emoji/48/sun-emoji.png",
+      cloudy: "https://img.icons8.com/emoji/48/cloud-emoji.png",
+      lightrain: "https://img.icons8.com/emoji/48/cloud-with-rain-emoji.png",
+      rain: "https://img.icons8.com/emoji/48/cloud-with-rain-emoji.png",
+      pcloudy: "https://img.icons8.com/emoji/48/sun-behind-cloud.png",
+      mcloudy: "https://img.icons8.com/emoji/48/cloud-emoji.png",
+      ishower: "https://img.icons8.com/emoji/48/cloud-with-rain-emoji.png",
+      snow: "https://img.icons8.com/emoji/48/cloud-with-snow-emoji.png",
+      ts: "https://img.icons8.com/emoji/48/cloud-with-lightning-and-rain.png",
+      mcloudynight: "https://img.icons8.com/emoji/48/cloud-emoji.png",
+      cloudynight: "https://img.icons8.com/emoji/48/cloud-emoji.png",
+      pcloudynight: "https://img.icons8.com/emoji/48/sun-behind-cloud.png", 
+      tsnight: "https://img.icons8.com/emoji/48/cloud-with-lightning-and-rain.png",
+      snownight: "https://img.icons8.com/emoji/48/cloud-with-snow-emoji.png",
+      lightrainnight: "https://img.icons8.com/emoji/48/cloud-with-rain-emoji.png",
+      rainnight: "https://img.icons8.com/emoji/48/cloud-with-rain-emoji.png",
+      humid: "https://img.icons8.com/emoji/48/droplet-emoji.png",
+      windy: "https://img.icons8.com/emoji/48/wind-face-emoji.png",
+      foggy: "https://img.icons8.com/emoji/48/fog-emoji.png"
+    };
+
+    function handleWeatherRequest() {
+      const [lat, lon] = getSelectedCityCoordinates();
+      const apiUrl = buildApiUrl(lat, lon);
+
+      showLoading();
+
+      fetchWeatherData(apiUrl)
+        .then(displayForecast)
+        .catch(showError)
+        .finally(hideLoading);
+    }
+
+    function getSelectedCityCoordinates() {
+      const value = document.getElementById("city").value;
+      return value.split(",");
+    }
+
+    function buildApiUrl(lat, lon) {
+      return `https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civil&output=json`;
+    }
+
+    async function fetchWeatherData(url) {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to fetch weather data.");
+      }
+      return await response.json();
+    }
+
+    function displayForecast(data) {
+      const forecastDiv = document.getElementById("forecast");
+      forecastDiv.innerHTML = "";
+
+      if (!data.dataseries || !Array.isArray(data.dataseries)) {
+        throw new Error("Weather data format unexpected!");
+      }
+
+      const days = data.dataseries.slice(0, 7);
+
+      days.forEach((day, index) => {
+        const dayElement = createDayCard(day, index);
+        forecastDiv.appendChild(dayElement);
+      });
+    }
+
+    function createDayCard(day, index) {
+      const div = document.createElement("div");
+      div.className = "day";
+
+      const today = new Date();
+      const forecastDate = new Date(today);
+      forecastDate.setDate(today.getDate() + index); // Add days
+
+      const dateStr = forecastDate.toDateString();
+      const weather = day.weather;
+      const iconUrl = weatherIcons[weather] || "https://img.icons8.com/emoji/48/question-mark.png";
+
+      div.innerHTML = `
+        <strong>${dateStr}</strong>
+        <img src="${iconUrl}" alt="${weather}">
+        <div>${capitalize(weather)}</div>
+        <div>Temp: ${day.temp2m}°C</div>
+      `;
+      return div;
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function showError(error) {
+      document.getElementById("forecast").innerHTML = `<p style="color:red;">${error.message}</p>`;
+    }
+
+    function showLoading() {
+      document.getElementById("loading").textContent = "Loading forecast...";
+    }
+
+    function hideLoading() {
+      document.getElementById("loading").textContent = "";
+    }
+  </script>
+
+  </body>
 </html>
