@@ -1,8 +1,8 @@
-<h1 align="center">🌐 Personal Website</h1>
+<h1 align="center">🌤️ 7-Day Weather Forecast App</h1>
 
 <p align="center">
-  <b>A modern, responsive personal website to showcase your portfolio, projects, and online presence.</b><br/>
-  <i>Crafted with HTML, CSS, and JavaScript</i>
+  <b>A clean, responsive weather app that provides accurate 7-day forecasts for any location!</b><br/>
+  <i>Built with HTML, CSS, and JavaScript</i>
 </p>
 
 <p align="center">
@@ -13,47 +13,53 @@
 
 ---
 
-## 🚀 Live Site
+## 🔗 Live Demo
 
-🔗 **[View Website](https://lakshaykaushik1.github.io/Website/)**
+👉 **[Try it Now](https://lakshaykaushik1.github.io/Website/)**
+
+Search your city and get a clean 7-day weather overview!
 
 ---
 
-## ✨ Features
+## 🌟 Features
 
-✅ Elegant and clean design  
-✅ Fully responsive for all devices  
-✅ Easy to customize and deploy  
-✅ Smooth scrolling and transitions  
-✅ SEO-optimized structure  
+✅ 7-day weather forecast  
+✅ Search by city/location  
+✅ Responsive design for all devices  
+✅ Weather icons for conditions  
+✅ Real-time API data  
+✅ Smooth transitions and layout
+
+---
+
+## 📸 Preview
+
+<p align="center">
+  <img src="preview.png" alt="Weather App Screenshot" width="90%">
+</p>
+
+> _(You can replace `preview.png` with an actual screenshot of your project)_
 
 ---
 
 ## 🧰 Tech Stack
 
-| Tech         | Description                      |
-|--------------|----------------------------------|
-| 🧱 HTML5      | Markup structure                 |
-| 🎨 CSS3       | Styling and responsive layout    |
-| ⚙️ JavaScript | Interactivity and animations     |
-
----
-
-## 🖼️ Preview
-
-<p align="center">
-  <img src="preview.png" alt="Website Preview" width="90%">
-</p>
+| Tech         | Description                        |
+|--------------|------------------------------------|
+| 🧱 HTML5      | Markup structure                   |
+| 🎨 CSS3       | Styling and responsiveness         |
+| ⚙️ JavaScript | API requests, logic & interactivity |
+| ☁️ Weather API | (e.g., OpenWeatherMap or similar)   |
 
 ---
 
 ## 📦 Installation
 
 ```bash
-# Clone the repository
+# Clone the repo
 git clone https://github.com/lakshaykaushik1/Website.git
 
-# Navigate to the project directory
+# Navigate to project directory
 cd Website
 
-# Open index.html in your browser
+# Open index.html in a browser
