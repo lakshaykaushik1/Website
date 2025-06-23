@@ -38,8 +38,6 @@ Search your city and get a clean 7-day weather overview!
   <img src="preview.png" alt="Weather App Screenshot" width="90%">
 </p>
 
-> _(You can replace `preview.png` with an actual screenshot of your project)_
-
 ---
 
 ## 🧰 Tech Stack
