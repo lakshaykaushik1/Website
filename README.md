@@ -1,4 +1,4 @@
-<h1 align="center">🌤️ 7-Day Weather Forecast App</h1>
+<h1 align="center">🌤️ 7-Day Weather Forecast App!!</h1>
 
 <p align="center">
   <b>A clean, responsive weather app that provides accurate 7-day forecasts for any location!</b><br/>
